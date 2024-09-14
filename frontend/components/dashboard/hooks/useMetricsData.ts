@@ -16,6 +16,7 @@ export const useMetricsData = (organizationId: string) => {
   const [uniqueBy, setUniqueBy] = useState<'user' | 'visit'>('visit');
   const { execute, loading, error } = useMetricQuery();
   const { dataType, dateRange } = useDashboardStore();
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     if (dataType === 'sessions') {
@@ -36,11 +37,13 @@ export const useMetricsData = (organizationId: string) => {
         setMetricsData(result);
       } catch (err) {
         console.error('Error fetching metrics data:', err);
+      } finally {
+        setInitialLoad(false);
       }
     };
 
     fetchMetricsData();
   }, [dateRange, uniqueBy]);
 
-  return { metricsData, uniqueBy, loading, error };
+  return { metricsData, uniqueBy, loading: loading || initialLoad, error };
 };

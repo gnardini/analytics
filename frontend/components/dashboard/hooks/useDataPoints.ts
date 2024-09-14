@@ -9,6 +9,7 @@ export const useDataPoints = (
 ) => {
   const [dataPoints, setDataPoints] = useState<DataPoint[]>([]);
   const { execute, loading, error } = useDataPointsQuery();
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     const fetchDataPoints = async () => {
@@ -22,11 +23,13 @@ export const useDataPoints = (
         setDataPoints(result);
       } catch (err) {
         console.error('Error fetching data points:', err);
+      } finally {
+        setInitialLoad(false);
       }
     };
 
     fetchDataPoints();
   }, [dateRange]);
 
-  return { dataPoints, loading, error };
+  return { dataPoints, loading: loading || initialLoad, error };
 };

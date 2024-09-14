@@ -8,6 +8,7 @@ export const useCountsViewData = (organizationId: string) => {
   const [countsData, setCountsData] = useState<CountsData>({ sessions: 0, users: 0, visits: 0 });
   const { execute, loading, error } = useCountsQuery();
   const { dateRange } = useDashboardStore();
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     const fetchCountsData = async () => {
@@ -20,11 +21,13 @@ export const useCountsViewData = (organizationId: string) => {
         setCountsData(result.counts);
       } catch (err) {
         console.error('Error fetching counts data:', err);
+      } finally {
+        setInitialLoad(false);
       }
     };
 
     fetchCountsData();
   }, [dateRange]);
 
-  return { countsData, loading, error };
+  return { countsData, loading: loading || initialLoad, error };
 };
