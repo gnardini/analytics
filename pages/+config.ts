@@ -8,6 +8,6 @@ export default {
   Layout,
   Head,
 
-  title: 'Phinxer Analytice',
+  title: 'Phinxer Analytics',
   extends: vikeReact,
 } satisfies Config;
