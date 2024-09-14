@@ -37,11 +37,6 @@ export const ClickHouseService = {
     startTime: string,
     endTime: string,
   ): Promise<number> {
-    console.log({
-      organizationIds,
-      startTime,
-      endTime,
-    });
     const query = `
 SELECT COUNT(*) as count
 FROM event
@@ -62,6 +57,12 @@ WHERE organization_id IN {organizationIds:Array(String)}
   },
 
   async getCounts(organizationId: string, startDate: Date, endDate: Date): Promise<CountsData> {
+    console.log({
+      startDate,
+      endDate,
+      startDate2: parseDate(startDate),
+      endDate2: parseDate(endDate),
+    });
     try {
       const query = `
         SELECT

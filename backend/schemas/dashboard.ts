@@ -7,6 +7,7 @@ export const dashboardSchema = {
     organizationId: z.string(),
     startDate: dateSchema,
     endDate: dateSchema,
+    timeZone: z.string().optional(),
   }),
   output: z.object({
     counts: z.object({
