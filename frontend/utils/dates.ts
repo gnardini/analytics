@@ -1,26 +1,34 @@
 import { DateTime } from 'luxon';
 
-const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+function toISODateSafe(dateTime: DateTime): string {
+  return dateTime.toISODate() ?? '';
+}
 
 export function getStartDate(dateRange: string): string {
-  const today = DateTime.now().setZone(timezone);
+  const today = now();
 
   switch (dateRange) {
     case 'last_30_days':
-      return today.minus({ days: 30 }).toISODate();
+      return toISODateSafe(today.minus({ days: 30 }));
     case 'last_7_days':
-      return today.minus({ days: 7 }).toISODate();
+      return toISODateSafe(today.minus({ days: 7 }));
     case 'last_6_months':
-      return today.minus({ months: 6 }).toISODate();
+      return toISODateSafe(today.minus({ months: 6 }));
     case 'last_year':
-      return today.minus({ years: 1 }).toISODate();
+      return toISODateSafe(today.minus({ years: 1 }));
     case 'all_time':
-      return '2000-01-01'; // Arbitrary old date
+      return '2000-01-01';
     default:
-      return today.minus({ days: 30 }).toISODate();
+      return toISODateSafe(today.minus({ days: 30 }));
   }
 }
 
 export function getEndDate(): string {
-  return DateTime.now().setZone(timezone).plus({ days: 1 }).toISODate();
+  return toISODateSafe(now().plus({ days: 1 }));
+}
+
+export function now() {
+  const now = DateTime.now();
+  const zoned = now.setZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  return zoned.isValid ? zoned : now;
 }

@@ -19,6 +19,7 @@ export const useDataPoints = (
           startDate: getStartDate(dateRange.value),
           endDate: getEndDate(),
           granularity: dateRange.granularity,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         });
         setDataPoints(result);
       } catch (err) {

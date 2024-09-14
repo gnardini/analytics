@@ -11,11 +11,11 @@ export default createApiHandler({
       throw new ApiError(403, 'User not authenticated');
     }
 
-    const startDate = new Date(data.startDate);
-    const endDate = new Date(data.endDate);
-    console.log({ l: req.headers.location, data });
-
-    const counts = await ClickHouseService.getCounts(data.organizationId, startDate, endDate);
+    const counts = await ClickHouseService.getCounts(
+      data.organizationId,
+      data.startDate,
+      data.endDate,
+    );
     return { counts };
   },
 });

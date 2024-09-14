@@ -1,13 +1,10 @@
 import { z } from 'zod';
 
-const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
-
 export const dashboardSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: dateSchema,
-    endDate: dateSchema,
-    timeZone: z.string().optional(),
+    startDate: z.string().datetime({ offset: true }),
+    endDate: z.string().datetime({ offset: true }),
   }),
   output: z.object({
     counts: z.object({
@@ -21,8 +18,8 @@ export const dashboardSchema = {
 export const metricsDataSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: dateSchema,
-    endDate: dateSchema,
+    startDate: z.string().datetime({ offset: true }),
+    endDate: z.string().datetime({ offset: true }),
     uniqueBy: z.enum(['user', 'visit']).optional(),
   }),
   output: z.object({
@@ -38,9 +35,10 @@ export const metricsDataSchema = {
 export const dataPointsSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: dateSchema,
-    endDate: dateSchema,
+    startDate: z.string().datetime({ offset: true }),
+    endDate: z.string().datetime({ offset: true }),
     granularity: z.enum(['day', 'week', 'month']),
+    timeZone: z.string(),
   }),
   output: z.array(
     z.object({
@@ -48,6 +46,6 @@ export const dataPointsSchema = {
       users: z.number(),
       sessions: z.number(),
       visits: z.number(),
-    })
+    }),
   ),
 };

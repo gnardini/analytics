@@ -13,6 +13,10 @@ export const useCountsViewData = (organizationId: string) => {
   useEffect(() => {
     const fetchCountsData = async () => {
       try {
+        console.log({
+          s: getStartDate(dateRange.value),
+          e: getEndDate(),
+        });
         const result = await execute({
           organizationId,
           startDate: getStartDate(dateRange.value),

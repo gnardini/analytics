@@ -19,6 +19,7 @@ export default createApiHandler({
       startDate,
       endDate,
       data.granularity,
+      data.timeZone,
     );
     return dataPoints;
   },

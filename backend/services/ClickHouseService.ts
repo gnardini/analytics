@@ -56,13 +56,7 @@ WHERE organization_id IN {organizationIds:Array(String)}
     return parseInt(data[0].count, 10);
   },
 
-  async getCounts(organizationId: string, startDate: Date, endDate: Date): Promise<CountsData> {
-    console.log({
-      startDate,
-      endDate,
-      startDate2: parseDate(startDate),
-      endDate2: parseDate(endDate),
-    });
+  async getCounts(organizationId: string, startDate: string, endDate: string): Promise<CountsData> {
     try {
       const query = `
         SELECT
@@ -79,8 +73,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
         query,
         query_params: {
           organizationId,
-          startDate: parseDate(startDate),
-          endDate: parseDate(endDate),
+          startDate,
+          endDate,
         },
         format: 'JSONEachRow',
       });
@@ -147,18 +141,19 @@ WHERE organization_id IN {organizationIds:Array(String)}
     startDate: Date,
     endDate: Date,
     granularity: 'day' | 'week' | 'month',
+    timeZone: string,
   ): Promise<DataPoint[]> {
     try {
       let dateFunction: string;
       switch (granularity) {
         case 'day':
-          dateFunction = 'toDate(created_at)';
+          dateFunction = `toDate(created_at, '${timeZone}')`;
           break;
         case 'week':
-          dateFunction = 'toMonday(created_at)';
+          dateFunction = `toMonday(created_at, '${timeZone}')`;
           break;
         case 'month':
-          dateFunction = 'toStartOfMonth(created_at)';
+          dateFunction = `toStartOfMonth(created_at, '${timeZone}')`;
           break;
       }
 
