@@ -65,5 +65,6 @@
     "vite": "^5.4.3",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
