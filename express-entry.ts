@@ -17,6 +17,24 @@ export default (await startServer()) as unknown;
 async function startServer() {
   const app = express();
 
+  app.use((req, res, next) => {
+    if (req.path === '/api/event') {
+      const origin = req.headers.origin;
+      if (origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      }
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+      if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+      }
+    }
+
+    next();
+  });
+
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(`${root}/dist/client`));
   } else {

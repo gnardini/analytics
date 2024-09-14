@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx ./express-entry.ts",
     "build": "vite build",
-    "preview": "cross-env NODE_ENV=production tsx ./express-entry.ts"
+    "preview": "cross-env NODE_ENV=production tsx ./express-entry.ts",
+    "start": "tsx ./express-entry.ts"
   },
   "keywords": [],
   "author": "",
