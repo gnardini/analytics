@@ -1,5 +1,5 @@
-import Stripe from 'stripe';
 import { PUBLIC_APP_URL, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } from '@backend/config';
+import Stripe from 'stripe';
 import { UsersService } from './UsersService';
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
@@ -49,6 +49,9 @@ export const StripeService = {
   handleWebhook: async (payload: Buffer, signature: string): Promise<void> => {
     try {
       const event = stripe.webhooks.constructEvent(payload, signature, STRIPE_WEBHOOK_SECRET);
+      console.log({
+        event,
+      });
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;

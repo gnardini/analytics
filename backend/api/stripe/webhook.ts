@@ -15,6 +15,9 @@ export default createApiHandler({
   schema: stripeWebhookSchema,
   handler: async (_, { req }) => {
     const sig = req.headers['stripe-signature'] as string;
+    console.log({
+      sig,
+    });
     const reqBuffer = await buffer(req);
 
     try {
