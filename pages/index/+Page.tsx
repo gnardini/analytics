@@ -1,17 +1,16 @@
-import React from "react";
-import { Counter } from "./Counter.js";
+import { LandingScreen } from '@frontend/components/landing/LandingScreen.jsx';
+import { NotificationProvider } from '@frontend/context/NotificationContext.jsx';
+import { LandingData } from 'pages/index/+data.js';
+import { useData } from 'vike-react/useData';
 
 export default function Page() {
+  const { user } = useData<LandingData>();
+
   return (
     <>
-      <h1 className="font-bold text-3xl pb-4">My Vike app</h1>
-      This page is:
-      <ul>
-        <li>Rendered to HTML.</li>
-        <li>
-          Interactive. <Counter />
-        </li>
-      </ul>
+      <NotificationProvider>
+        <LandingScreen user={user} />
+      </NotificationProvider>
     </>
   );
 }

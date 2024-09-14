@@ -1,5 +1,4 @@
 // https://vike.dev/data
-import { todos } from "../../database/todoItems";
 import type { PageContextServer } from "vike/types";
 
 export type Data = {
@@ -7,5 +6,11 @@ export type Data = {
 };
 
 export default async function data(_pageContext: PageContextServer): Promise<Data> {
-  return todos;
+  return {
+    todo: [
+      { text: 'Buy milk' },
+      { text: 'Buy eggs' },
+      { text: 'Buy bread' },
+    ],
+  };
 }
