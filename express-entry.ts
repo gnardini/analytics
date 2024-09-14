@@ -35,6 +35,8 @@ async function startServer() {
     next();
   });
 
+  app.use('/api', await apiRouter());
+
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(`${root}/dist/client`));
   } else {
@@ -50,8 +52,6 @@ async function startServer() {
     ).middlewares;
     app.use(viteDevMiddleware);
   }
-
-  app.use('/api', await apiRouter());
 
   /**
    * Vike route

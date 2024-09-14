@@ -48,7 +48,7 @@ export const StripeService = {
 
   handleWebhook: async (payload: Buffer, signature: string): Promise<void> => {
     try {
-      console.log('before constructing', payload, signature, STRIPE_WEBHOOK_SECRET);
+      console.log('before constructing', payload, signature);
       const event = stripe.webhooks.constructEvent(payload, signature, STRIPE_WEBHOOK_SECRET);
       console.log({
         event,
