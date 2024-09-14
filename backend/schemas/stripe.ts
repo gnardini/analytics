@@ -9,10 +9,3 @@ export const stripeSchema = {
     url: z.string().url(),
   }),
 };
-
-export const stripeWebhookSchema = {
-  input: z.any(),
-  output: z.object({
-    received: z.boolean(),
-  }),
-};

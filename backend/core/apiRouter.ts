@@ -1,5 +1,6 @@
 import { initCronJobs } from '@backend/core/cron';
-import { json, Router } from 'express';
+import { StripeService } from '@backend/services/StripeService';
+import express, { json, Router } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -43,6 +44,16 @@ export async function apiRouter() {
   initCronJobs();
 
   const router = Router();
+  router.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'] as string;
+    try {
+      await StripeService.handleWebhook(req.body, sig);
+      res.sendStatus(200);
+    } catch (err: any) {
+      console.error('Error processing webhook:', err);
+      throw new Error(`Webhook Error: ${err.message}`);
+    }
+  });
   router.use(json());
 
   const currentFilePath = fileURLToPath(import.meta.url);
