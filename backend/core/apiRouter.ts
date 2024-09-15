@@ -51,7 +51,7 @@ export async function apiRouter() {
       res.sendStatus(200);
     } catch (err: any) {
       console.error('Error processing webhook:', err);
-      throw new Error(`Webhook Error: ${err.message}`);
+      res.sendStatus(500);
     }
   });
   router.use(json());
