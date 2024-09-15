@@ -48,9 +48,7 @@ export const StripeService = {
 
   handleWebhook: async (payload: Buffer, signature: string): Promise<void> => {
     try {
-      console.log('before!');
       const event = stripe.webhooks.constructEvent(payload, signature, STRIPE_WEBHOOK_SECRET);
-      console.log({ event });
 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
