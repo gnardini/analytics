@@ -24,6 +24,6 @@
       "@type/*": ["types/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "script.js", "scripts/**/*.js"]
+  "exclude": ["node_modules", "dist", "public/script.js", "scripts/**/*.js"]
 
 }
