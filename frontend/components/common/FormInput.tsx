@@ -10,6 +10,7 @@ interface FormInputProps {
   className?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export function FormInput({
@@ -20,11 +21,19 @@ export function FormInput({
   onChange,
   className,
   required = false,
+  disabled = false,
 }: FormInputProps) {
   return (
     <div className={className}>
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} type={type} value={value} onChange={onChange} required={required} />
+      <Input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+        disabled={disabled}
+      />
     </div>
   );
 }
