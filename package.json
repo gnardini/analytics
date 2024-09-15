@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "tsx ./express-entry.ts",
-    "build": "vite build",
-    "build:full": "tsc --outDir dist/full --noEmit false --allowImportingTsExtensions false",
+    "build": "vite build && tsc --outDir dist/full --noEmit false --allowImportingTsExtensions false",
     "start": "tsx ./express-entry.ts"
   },
   "keywords": [],
   "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@types/bcrypt": "^5.0.0",
