@@ -8,6 +8,7 @@ export default function HeadDefault() {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="description" content="Powerful and Affordable Web & Mobile Analytics" />
       <link rel="icon" href={logoUrl} />
+      <script defer data-domain="phinxer.com" src="https://phinxer.com/script.js"></script>
     </>
   );
 }

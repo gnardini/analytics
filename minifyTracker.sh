@@ -1,1 +1,1 @@
-terser scripts/script.js --compress --mangle --output assets/script.js
+terser scripts/script.js --compress --mangle --output public/script.js
