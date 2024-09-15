@@ -11,7 +11,7 @@ export default function Page() {
     <>
       <NotificationProvider>
         <AuthProvider user={user} organizations={organizations} activeOrg={activeOrg}>
-          <DashboardScreen activeOrg={activeOrg} />
+          <DashboardScreen activeOrg={activeOrg} membershipType={activeOrg.membershipType} />
         </AuthProvider>
       </NotificationProvider>
     </>

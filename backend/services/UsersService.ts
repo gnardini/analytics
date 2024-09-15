@@ -27,7 +27,7 @@ export const UsersService = {
   async getOrganizationsAndActive(
     user: User,
     queryOrgId?: string,
-  ): Promise<{ organizations: Organization[]; activeOrg: Organization }> {
+  ): Promise<{ organizations: Organization[]; activeOrg: Organization; membershipType: string }> {
     const organizations = await OrganizationsService.getOrganizationsForUser(user.id);
 
     const activeOrg =
@@ -39,7 +39,9 @@ export const UsersService = {
       await this.updateActiveOrg(user, activeOrg.id);
     }
 
-    return { organizations, activeOrg };
+    const membershipType = await OrganizationMembersService.getMembershipType(activeOrg.id, user.id);
+
+    return { organizations, activeOrg, membershipType };
   },
 
   async getOrCreateUserByEmail(email: string): Promise<{ user: User; created: boolean }> {
