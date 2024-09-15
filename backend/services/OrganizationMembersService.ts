@@ -88,7 +88,7 @@ const OrganizationMembersService = {
       });
       EmailService.sendEmail(
         userEmail,
-        'Invitation to join the team',
+        `You've been invited to join ${org?.name} analytics at Phinxer`,
         `Hi!
 
 You've been invited to the analytics team at ${org?.name}.
