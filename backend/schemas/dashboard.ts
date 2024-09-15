@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const dashboardSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: z.string().datetime({ offset: true }),
-    endDate: z.string().datetime({ offset: true }),
+    startDate: z.coerce.number(),
+    endDate: z.coerce.number(),
   }),
   output: z.object({
     counts: z.object({
@@ -18,8 +18,8 @@ export const dashboardSchema = {
 export const metricsDataSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: z.string().datetime({ offset: true }),
-    endDate: z.string().datetime({ offset: true }),
+    startDate: z.coerce.number(),
+    endDate: z.coerce.number(),
     uniqueBy: z.enum(['user', 'visit']).optional(),
   }),
   output: z.object({
@@ -35,8 +35,8 @@ export const metricsDataSchema = {
 export const dataPointsSchema = {
   input: z.object({
     organizationId: z.string(),
-    startDate: z.string().datetime({ offset: true }),
-    endDate: z.string().datetime({ offset: true }),
+    startDate: z.coerce.number(),
+    endDate: z.coerce.number(),
     granularity: z.enum(['day', 'week', 'month']),
     timeZone: z.string(),
   }),

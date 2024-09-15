@@ -56,7 +56,7 @@ WHERE organization_id IN {organizationIds:Array(String)}
     return parseInt(data[0].count, 10);
   },
 
-  async getCounts(organizationId: string, startDate: string, endDate: string): Promise<CountsData> {
+  async getCounts(organizationId: string, startDate: number, endDate: number): Promise<CountsData> {
     try {
       const query = `
         SELECT
@@ -66,8 +66,7 @@ WHERE organization_id IN {organizationIds:Array(String)}
         FROM event
         WHERE organization_id = {organizationId:String}
           AND event = 'pageview'
-          AND created_at BETWEEN {startDate:DateTime} AND {endDate:DateTime}
-      `;
+          AND created_at BETWEEN {startDate:Int32} AND {endDate:Int32}`;
 
       const result = await clickhouse.query({
         query,
@@ -95,8 +94,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
 
   async getMetricData(
     organizationId: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: number,
+    endDate: number,
     metric: 'page' | 'referrer' | 'device' | 'browser' | 'country' | 'language',
     uniqueBy: 'user' | 'visit' = 'visit',
   ): Promise<MetricData[]> {
@@ -109,7 +108,7 @@ WHERE organization_id IN {organizationIds:Array(String)}
         FROM event
         WHERE organization_id = {organizationId:String}
           AND event = 'pageview'
-          AND created_at BETWEEN {startDate:DateTime} AND {endDate:DateTime}
+          AND created_at BETWEEN {startDate:Int32} AND {endDate:Int32}
         GROUP BY name
         ORDER BY count DESC
         LIMIT 100
@@ -119,8 +118,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
         query,
         query_params: {
           organizationId,
-          startDate: parseDate(startDate),
-          endDate: parseDate(endDate),
+          startDate,
+          endDate,
         },
         format: 'JSONEachRow',
       });
@@ -138,8 +137,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
 
   async getDataPoints(
     organizationId: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: number,
+    endDate: number,
     granularity: 'day' | 'week' | 'month',
     timeZone: string,
   ): Promise<DataPoint[]> {
@@ -166,7 +165,7 @@ WHERE organization_id IN {organizationIds:Array(String)}
         FROM event
         WHERE organization_id = {organizationId:String}
           AND event = 'pageview'
-          AND created_at BETWEEN {startDate:DateTime} AND {endDate:DateTime}
+          AND created_at BETWEEN {startDate:Int32} AND {endDate:Int32}
         GROUP BY date
         ORDER BY date
       `;
@@ -175,8 +174,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
         query,
         query_params: {
           organizationId,
-          startDate: parseDate(startDate),
-          endDate: parseDate(endDate),
+          startDate,
+          endDate,
         },
         format: 'JSONEachRow',
       });
@@ -196,8 +195,8 @@ WHERE organization_id IN {organizationIds:Array(String)}
 
   async getMetricsData(
     organizationId: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: number,
+    endDate: number,
     uniqueBy: 'user' | 'visit' = 'visit',
   ): Promise<MetricsData> {
     const metrics = ['page', 'referrer', 'device', 'browser', 'country', 'language'] as const;

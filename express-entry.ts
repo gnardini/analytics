@@ -62,7 +62,7 @@ async function startServer() {
   app.all('*', createHandler(vikeHandler)());
 
   app.listen(port, () => {
-    console.log(`Server listening on http://localhost:${port}`);
+    console.info(`Server listening on http://localhost:${port}`);
   });
 
   return app;

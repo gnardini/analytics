@@ -11,13 +11,10 @@ export default createApiHandler({
       throw new ApiError(403, 'User not authenticated');
     }
 
-    const startDate = new Date(data.startDate);
-    const endDate = new Date(data.endDate);
-
     const metricsData = await ClickHouseService.getMetricsData(
       data.organizationId,
-      startDate,
-      endDate,
+      data.startDate,
+      data.endDate,
       data.uniqueBy,
     );
     return metricsData;
