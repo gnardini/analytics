@@ -5,8 +5,8 @@ dotenv.config();
 export const PUBLIC_APP_URL = 'https://phinxer.com';
 
 export const PORT = process.env.PORT || 8080;
-export const ENVIRONMENT = process.env.ENVIRONMENT ?? 'undefined';
-export const IS_DEV_MODE = ENVIRONMENT === 'development';
+export const NODE_ENV = process.env.NODE_ENV ?? 'undefined';
+export const IS_DEV_MODE = NODE_ENV === 'development';
 export const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const DB_HOST = process.env.DB_HOST ?? 'localhost';

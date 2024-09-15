@@ -52,6 +52,11 @@ This will start the server on `http://localhost:3236` (or the port specified in 
 
 To run the project in production mode:
 
+Update your .env file:
+```
+NODE_ENV=production
+```
+
 1. Build the project:
    ```
    yarn build
@@ -66,16 +71,6 @@ To run the project in production mode:
 ### Resend (for email invitations)
 
 If you want to enable email invitations, sign up for a Resend account and add your API key to the `RESEND_API_KEY` variable in the `.env` file.
-
-### Stripe (for payments)
-
-To enable Stripe integration:
-
-1. Sign up for a Stripe account
-2. Add the following variables to your `.env` file:
-   - `STRIPE_SECRET_KEY`
-   - `STRIPE_WEBHOOK_SECRET`
-   - `STRIPE_PUBLISHABLE_KEY`
 
 ## Note
 

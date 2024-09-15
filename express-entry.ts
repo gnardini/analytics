@@ -37,7 +37,7 @@ async function startServer() {
 
   app.use('/api', await apiRouter());
 
-  if (process.env.ENVIRONMENT === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     app.use(express.static(`${root}/dist/client`));
   } else {
     // Instantiate Vite's development server and integrate its middleware to our server.
