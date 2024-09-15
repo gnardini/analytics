@@ -12,6 +12,7 @@ export const transformUser = (user: any): User => ({
   created_at: toISOString(user.created_at),
   updated_at: toISOString(user.updated_at),
   last_access: user.last_access ? toISOString(user.last_access) : null,
+  last_events_update: user.last_events_update ? toISOString(user.last_events_update) : null,
 });
 
 export const UsersService = {
