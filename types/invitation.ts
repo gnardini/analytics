@@ -1,5 +1,5 @@
 export interface Invitation {
-  organizationId: string;
+  organizationName: string;
   membershipType: 'admin' | 'member';
   email: string;
 }
