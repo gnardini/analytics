@@ -1,11 +1,11 @@
 import { ApiError } from '@backend/core/apiHandler';
 import AuthService from '@backend/services/AuthService';
+import { Invitation } from '@type/invitation';
 import type { PageContextServer } from 'vike/types';
 
 export type WelcomeData = {
-  email: string;
-  organizationId: string;
-  membershipType: 'admin' | 'member';
+  invitationDetails: Invitation;
+  token: string;
 };
 
 export default async function data(context: PageContextServer): Promise<WelcomeData> {
@@ -17,5 +17,8 @@ export default async function data(context: PageContextServer): Promise<WelcomeD
 
   const invitationDetails = await AuthService.verifyInvitationToken(token);
 
-  return invitationDetails;
+  return {
+    invitationDetails,
+    token,
+  };
 }

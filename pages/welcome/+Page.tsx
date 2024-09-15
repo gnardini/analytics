@@ -4,11 +4,11 @@ import { WelcomeData } from 'pages/welcome/+data';
 import { useData } from 'vike-react/useData';
 
 export default function Page() {
-  const invitationDetails = useData<WelcomeData>();
+  const { token, invitationDetails } = useData<WelcomeData>();
 
   return (
     <NotificationProvider>
-      <WelcomeScreen invitationDetails={invitationDetails} />
+      <WelcomeScreen invitationDetails={invitationDetails} token={token} />
     </NotificationProvider>
   );
 }

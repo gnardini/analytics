@@ -1,15 +1,16 @@
 import { Button } from '@frontend/components/common/Button';
 import { FormInput } from '@frontend/components/common/FormInput';
-import { useWelcomeSignUp } from '@frontend/queries/auth/useWelcomeSignUp';
 import { useNotification } from '@frontend/context/NotificationContext';
+import { useWelcomeSignUp } from '@frontend/queries/auth/useWelcomeSignUp';
+import { Invitation } from '@type/invitation';
 import React, { useState } from 'react';
-import { WelcomeData } from 'pages/welcome/+data';
 
 interface WelcomeScreenProps {
-  invitationDetails: WelcomeData;
+  token: string;
+  invitationDetails: Invitation;
 }
 
-export function WelcomeScreen({ invitationDetails }: WelcomeScreenProps) {
+export function WelcomeScreen({ token, invitationDetails }: WelcomeScreenProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { execute, loading, error } = useWelcomeSignUp();
@@ -24,7 +25,7 @@ export function WelcomeScreen({ invitationDetails }: WelcomeScreenProps) {
     }
 
     try {
-      await execute({ token: invitationDetails.token, password });
+      await execute({ token, password });
       showNotification('Welcome! Your account has been set up.', 'success');
       window.location.href = '/dashboard';
     } catch (error) {
@@ -34,7 +35,9 @@ export function WelcomeScreen({ invitationDetails }: WelcomeScreenProps) {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-secondary-background rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Welcome to {invitationDetails.organizationName}</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        Welcome to {invitationDetails.organizationName}
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormInput
           id="email"
@@ -60,14 +63,8 @@ export function WelcomeScreen({ invitationDetails }: WelcomeScreenProps) {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        {error && (
-          <p className="text-error text-sm">{error}</p>
-        )}
-        <Button
-          type="submit"
-          loading={loading}
-          className="w-full py-2 text-lg"
-        >
+        {error && <p className="text-error text-sm">{error}</p>}
+        <Button loading={loading} className="w-full py-2 text-lg">
           Complete Sign Up
         </Button>
       </form>
