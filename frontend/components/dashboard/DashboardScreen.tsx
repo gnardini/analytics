@@ -1,6 +1,6 @@
 import { Container } from '@frontend/components/common/Container';
 import { Dropdown } from '@frontend/components/common/Dropdown';
-import { Organization } from '@type/organization';
+import { OrganizationWithMembership } from '@type/organization';
 import { Tab } from '@type/tabs';
 import React, { useState } from 'react';
 import CountsView from './components/CountsView';
@@ -12,7 +12,7 @@ import { useDataPoints } from './hooks/useDataPoints';
 import SetupView from './views/SetupView';
 
 interface DashboardScreenProps {
-  activeOrg: Organization;
+  activeOrg: OrganizationWithMembership;
 }
 
 type DateRange = {
@@ -41,7 +41,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ activeOrg }) => {
   return (
     <Container activeTab={Tab.App} showSideBar={false} className="flex-1 px-6 pb-6 overflow-auto">
       <div className="max-w-[1000px] mx-auto">
-        <OrganizationSelector activeOrg={activeOrg} />
+        <OrganizationSelector activeOrg={activeOrg} membershipType={activeOrg.membershipType} />
         {!isSetupComplete ? (
           <SetupView
             domain={activeOrg.name}

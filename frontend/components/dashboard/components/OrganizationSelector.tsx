@@ -12,9 +12,10 @@ import { FiSettings } from 'react-icons/fi';
 
 interface OrganizationSelectorProps {
   activeOrg: Organization;
+  membershipType: string;
 }
 
-export const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ activeOrg }) => {
+export const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ activeOrg, membershipType }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isManageTeamModalOpen, setIsManageTeamModalOpen] = useState(false);
@@ -69,13 +70,15 @@ export const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ acti
         )}
       </div>
       <div className="flex items-center">
-        <Button
-          type={ButtonType.Secondary}
-          onClick={() => setIsPurchaseEventsModalOpen(true)}
-          className="mr-2 py-2 px-3"
-        >
-          {amount(user.events_left)} events left
-        </Button>
+        {membershipType === 'owner' && (
+          <Button
+            type={ButtonType.Secondary}
+            onClick={() => setIsPurchaseEventsModalOpen(true)}
+            className="mr-2 py-2 px-3"
+          >
+            {amount(user.events_left)} events left
+          </Button>
+        )}
         <Button
           type={ButtonType.Secondary}
           onClick={() => setIsManageTeamModalOpen(true)}
@@ -96,6 +99,7 @@ export const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ acti
         visible={isManageTeamModalOpen}
         closeModal={() => setIsManageTeamModalOpen(false)}
         organizationId={activeOrg.id}
+        membershipType={membershipType}
       />
       <PurchaseEventsModal
         visible={isPurchaseEventsModalOpen}

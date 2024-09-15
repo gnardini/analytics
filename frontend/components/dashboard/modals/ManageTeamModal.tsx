@@ -11,15 +11,17 @@ interface ManageTeamModalProps {
   visible: boolean;
   closeModal: () => void;
   organizationId: string;
+  membershipType: string;
 }
 
 export const ManageTeamModal: React.FC<ManageTeamModalProps> = ({
   visible,
   closeModal,
   organizationId,
+  membershipType,
 }) => {
   const [email, setEmail] = useState('');
-  const [membershipType, setMembershipType] = useState<'admin' | 'member'>('member');
+  const [newMembershipType, setNewMembershipType] = useState<'member' | 'admin'>('member');
 
   const { showNotification } = useNotification();
 
@@ -56,7 +58,7 @@ export const ManageTeamModal: React.FC<ManageTeamModalProps> = ({
       return;
     }
 
-    const response = await addMember({ organizationId, email, membershipType });
+    const response = await addMember({ organizationId, email, membershipType: newMembershipType });
     if (response.member) {
       setMembers([...members, response.member]);
       setEmail('');
@@ -84,37 +86,39 @@ export const ManageTeamModal: React.FC<ManageTeamModalProps> = ({
           </ul>
         )}
       </div>
-      <form onSubmit={handleAddMember} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Add New Member
-          </label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="membershipType" className="block text-sm font-medium mb-1">
-            Membership Type
-          </label>
-          <select
-            id="membershipType"
-            value={membershipType}
-            onChange={(e) => setMembershipType(e.target.value as 'admin' | 'member')}
-            className="w-full py-1 px-1 bg-tertiary-background text-text-primary rounded-md border-2 border-transparent focus:border-primary-accent focus:outline-none shadow-sm"
-          >
-            <option value="member">Member</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        <Button type={ButtonType.Primary} className="w-full py-2" disabled={addLoading}>
-          {addLoading ? 'Adding...' : 'Add Member'}
-        </Button>
-      </form>
+      {(membershipType === 'owner' || membershipType === 'admin') && (
+        <form onSubmit={handleAddMember} className="space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium mb-1">
+              Add New Member
+            </label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="membershipType" className="block text-sm font-medium mb-1">
+              Membership Type
+            </label>
+            <select
+              id="membershipType"
+              value={newMembershipType}
+              onChange={(e) => setNewMembershipType(e.target.value as 'admin' | 'member')}
+              className="w-full py-1 px-1 bg-tertiary-background text-text-primary rounded-md border-2 border-transparent focus:border-primary-accent focus:outline-none shadow-sm"
+            >
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <Button type={ButtonType.Primary} className="w-full py-2" disabled={addLoading}>
+            {addLoading ? 'Adding...' : 'Add Member'}
+          </Button>
+        </form>
+      )}
       {addError && <p className="text-red-500 mt-2">Error adding member: {addError}</p>}
     </Modal>
   );
