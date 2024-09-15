@@ -36,7 +36,7 @@ const AuthService = {
         id: uuidv7(),
         email,
         password: hashedPassword,
-        last_access: null,
+        last_access: new Date(),
       })
       .returning('*');
 
@@ -89,25 +89,37 @@ const AuthService = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [newUser] = await db('users')
-      .insert({
-        id: uuidv7(),
-        email,
-        password: hashedPassword,
-        last_access: null,
-      })
-      .returning('*');
+    let user = await db('users').where({ email }).first();
+
+    if (user) {
+      [user] = await db('users')
+        .where({ id: user.id })
+        .update({
+          password: hashedPassword,
+          last_access: new Date(),
+        })
+        .returning('*');
+    } else {
+      [user] = await db('users')
+        .insert({
+          id: uuidv7(),
+          email,
+          password: hashedPassword,
+          last_access: new Date(),
+        })
+        .returning('*');
+    }
 
     await OrganizationMembersService.getOrCreateOrganizationMember(
       organizationId,
-      newUser.id,
+      user.id,
       membershipType,
     );
 
-    const newToken = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '30d' });
+    const newToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '30d' });
 
     return {
-      user: transformUser(newUser),
+      user: transformUser(user),
       token: newToken,
     };
   },
