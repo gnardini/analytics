@@ -4,6 +4,9 @@
 
 An alternative to Google Analytics, Plausible, Fathom, Simple Analytics, Matomo and others.
 
+![Phinxer Landing Demo](assets/landing-demo.png)
+*Phinxer Dashboard Preview*
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
