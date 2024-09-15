@@ -62,12 +62,19 @@ const AuthService = {
     }
   },
 
-  verifyInvitationToken: (token: string): { email: string; organizationId: string } => {
+  verifyInvitationToken: (
+    token: string,
+  ): { email: string; organizationId: string; membershipType: 'admin' | 'member' } => {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { email: string; organizationId: string };
+      const decoded = jwt.verify(token, JWT_SECRET) as {
+        email: string;
+        organizationId: string;
+        membershipType: 'admin' | 'member';
+      };
       return {
         email: decoded.email,
         organizationId: decoded.organizationId,
+        membershipType: decoded.membershipType,
       };
     } catch (error) {
       throw new Error('Invalid or expired invitation token');
@@ -75,11 +82,11 @@ const AuthService = {
   },
 
   signUpWithInvitation: async (
-    email: string,
+    token: string,
     password: string,
-    organizationId: string,
-    membershipType: 'admin' | 'member',
   ): Promise<{ user: User; token: string }> => {
+    const { email, organizationId, membershipType } = AuthService.verifyInvitationToken(token);
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [newUser] = await db('users')
@@ -97,11 +104,11 @@ const AuthService = {
       membershipType,
     );
 
-    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '30d' });
+    const newToken = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '30d' });
 
     return {
       user: transformUser(newUser),
-      token,
+      token: newToken,
     };
   },
 };
