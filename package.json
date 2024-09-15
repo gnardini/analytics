@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx ./express-entry.ts",
     "build": "vite build",
+    "build:full": "tsc --outDir dist/full --noEmit false --allowImportingTsExtensions false",
     "start": "tsx ./express-entry.ts"
   },
   "keywords": [],

@@ -47,8 +47,10 @@ export const UsersService = {
     const created = !user;
 
     if (!user) {
-      user = await db('users').insert({ email }).returning('*');
+      [user] = await db('users').insert({ email }).returning('*');
     }
+
+    console.log('user', user);
 
     return { user: transformUser(user), created };
   },

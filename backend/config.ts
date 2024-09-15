@@ -13,6 +13,7 @@ export const DB_HOST = process.env.DB_HOST ?? 'localhost';
 export const DB_NAME = process.env.DB_NAME ?? 'pathways_test';
 export const DB_USERNAME = process.env.DB_USERNAME ?? 'postgres';
 export const DB_PASSWORD = process.env.DB_PASSWORD ?? 'postgres';
+export const DB_RUN_MIGRATIONS = process.env.DB_RUN_MIGRATIONS === 'true';
 
 export const CLICKHOUSE_HOST = process.env.CLICKHOUSE_HOST ?? '';
 export const CLICKHOUSE_PASSWORD = process.env.CLICKHOUSE_PASSWORD ?? '';

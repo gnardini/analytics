@@ -1,6 +1,7 @@
 import { Button, ButtonType } from '@frontend/components/common/Button';
 import { Input } from '@frontend/components/common/Input';
 import { Modal } from '@frontend/components/common/Modal';
+import { useNotification } from '@frontend/context/NotificationContext';
 import { useAddOrganizationMemberQuery } from '@frontend/queries/organizations/useAddOrganizationMemberQuery';
 import { useListOrganizationMembersQuery } from '@frontend/queries/organizations/useListOrganizationMembersQuery';
 import { OrgUser } from '@type/organization';
@@ -19,6 +20,8 @@ export const ManageTeamModal: React.FC<ManageTeamModalProps> = ({
 }) => {
   const [email, setEmail] = useState('');
   const [membershipType, setMembershipType] = useState<'admin' | 'member'>('member');
+
+  const { showNotification } = useNotification();
 
   const {
     execute: listMembers,
@@ -57,6 +60,7 @@ export const ManageTeamModal: React.FC<ManageTeamModalProps> = ({
     if (response.member) {
       setMembers([...members, response.member]);
       setEmail('');
+      showNotification('Invite email sent!', 'success');
     }
   };
 

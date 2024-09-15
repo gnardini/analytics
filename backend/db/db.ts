@@ -1,4 +1,4 @@
-import { DB_HOST, DB_NAME, DB_PASSWORD, DB_USERNAME } from '@backend/config';
+import { DB_HOST, DB_NAME, DB_PASSWORD, DB_RUN_MIGRATIONS, DB_USERNAME } from '@backend/config';
 import knex, { Knex } from 'knex';
 
 let knexDb: Knex;
@@ -17,7 +17,7 @@ export function getDatabase() {
   return knexDb;
 }
 
-export async function initDatabase(runMigrations = true): Promise<Knex> {
+export async function initDatabase(runMigrations = DB_RUN_MIGRATIONS): Promise<Knex> {
   if (!!knexDb) {
     return knexDb;
   }
@@ -34,11 +34,10 @@ export async function initDatabase(runMigrations = true): Promise<Knex> {
   if (runMigrations) {
     console.info('Running Migrations');
 
-    // TODO: migrations
-    // await knexDb.migrate.latest({
-    //   directory: './dist/full/src/backend/db/migrations',
-    //   loadExtensions: ['.js'],
-    // });
+    await knexDb.migrate.latest({
+      directory: './dist/full/backend/db/migrations',
+      loadExtensions: ['.js'],
+    });
   }
 
   console.info('Database initialized successfully');
