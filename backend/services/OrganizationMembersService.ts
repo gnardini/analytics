@@ -28,7 +28,10 @@ const OrganizationMembersService = {
     return members.map(transformOrgUser);
   },
 
-  getMembershipType: async (organizationId: string, userId: string): Promise<string> => {
+  getMembershipType: async (
+    organizationId: string,
+    userId: string,
+  ): Promise<'owner' | 'admin' | 'member'> => {
     const orgUser = await db('user_organizations')
       .where({ organization_id: organizationId, user_id: userId })
       .select('membership_type')

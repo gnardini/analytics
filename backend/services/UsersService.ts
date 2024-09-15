@@ -1,5 +1,6 @@
 import { db } from '@backend/db/db';
 import { toISOString } from '@backend/services/dbHelpers';
+import OrganizationMembersService from '@backend/services/OrganizationMembersService';
 import OrganizationsService from '@backend/services/OrganizationsService';
 import { Organization } from '@type/organization';
 import { User } from '@type/user';
@@ -27,7 +28,11 @@ export const UsersService = {
   async getOrganizationsAndActive(
     user: User,
     queryOrgId?: string,
-  ): Promise<{ organizations: Organization[]; activeOrg: Organization; membershipType: string }> {
+  ): Promise<{
+    organizations: Organization[];
+    activeOrg: Organization;
+    membershipType: 'owner' | 'admin' | 'member';
+  }> {
     const organizations = await OrganizationsService.getOrganizationsForUser(user.id);
 
     const activeOrg =
@@ -39,7 +44,10 @@ export const UsersService = {
       await this.updateActiveOrg(user, activeOrg.id);
     }
 
-    const membershipType = await OrganizationMembersService.getMembershipType(activeOrg.id, user.id);
+    const membershipType = await OrganizationMembersService.getMembershipType(
+      activeOrg.id,
+      user.id,
+    );
 
     return { organizations, activeOrg, membershipType };
   },

@@ -35,6 +35,5 @@ export const addOrganizationMemberSchema = {
       created_at: z.string(),
       updated_at: z.string(),
     }),
-    invited: z.boolean(),
   }),
 };

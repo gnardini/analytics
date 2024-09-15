@@ -5,13 +5,13 @@ import { DashboardData } from 'pages/dashboard/+data';
 import { useData } from 'vike-react/useData';
 
 export default function Page() {
-  const { organizations, activeOrg, user } = useData<DashboardData>();
+  const { organizations, activeOrg, membershipType, user } = useData<DashboardData>();
 
   return (
     <>
       <NotificationProvider>
         <AuthProvider user={user} organizations={organizations} activeOrg={activeOrg}>
-          <DashboardScreen activeOrg={activeOrg} membershipType={activeOrg.membershipType} />
+          <DashboardScreen activeOrg={activeOrg} membershipType={membershipType} />
         </AuthProvider>
       </NotificationProvider>
     </>

@@ -11,11 +11,11 @@ export default createApiHandler({
     if (!(await OrganizationsService.userOwnsOrganization(user.id, data.organizationId, true))) {
       throw new ApiError(403, 'User does not have permission to add members');
     }
-    const member = await OrganizationMembersService.addOrganizationMember(
+    const { orgUser: member } = await OrganizationMembersService.addOrganizationMember(
       data.organizationId,
       data.email,
       data.membershipType,
     );
-    return { member, invited: member === null };
+    return { member };
   },
 });

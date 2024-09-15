@@ -6,10 +6,6 @@ export interface Organization {
   setup_complete_at: string | null;
 }
 
-export interface OrganizationWithMembership extends Organization {
-  membershipType: string;
-}
-
 export interface ApiKey {
   id: string;
   organization_id: string;

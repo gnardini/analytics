@@ -1,6 +1,6 @@
 import { Container } from '@frontend/components/common/Container';
 import { Dropdown } from '@frontend/components/common/Dropdown';
-import { OrganizationWithMembership } from '@type/organization';
+import { Organization } from '@type/organization';
 import { Tab } from '@type/tabs';
 import React, { useState } from 'react';
 import CountsView from './components/CountsView';
@@ -12,7 +12,8 @@ import { useDataPoints } from './hooks/useDataPoints';
 import SetupView from './views/SetupView';
 
 interface DashboardScreenProps {
-  activeOrg: OrganizationWithMembership;
+  activeOrg: Organization;
+  membershipType: 'owner' | 'admin' | 'member';
 }
 
 type DateRange = {
@@ -29,7 +30,7 @@ const dateRangeOptions: DateRange[] = [
   { label: 'All time', value: 'all_time', granularity: 'month' },
 ];
 
-const DashboardScreen: React.FC<DashboardScreenProps> = ({ activeOrg }) => {
+const DashboardScreen: React.FC<DashboardScreenProps> = ({ activeOrg, membershipType }) => {
   const [isSetupComplete, setIsSetupComplete] = useState(activeOrg.setup_complete_at !== null);
   const { dataType, setDataType, dateRange, setDateRange } = useDashboardStore();
   const {
@@ -41,7 +42,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ activeOrg }) => {
   return (
     <Container activeTab={Tab.App} showSideBar={false} className="flex-1 px-6 pb-6 overflow-auto">
       <div className="max-w-[1000px] mx-auto">
-        <OrganizationSelector activeOrg={activeOrg} membershipType={activeOrg.membershipType} />
+        <OrganizationSelector activeOrg={activeOrg} membershipType={membershipType} />
         {!isSetupComplete ? (
           <SetupView
             domain={activeOrg.name}
