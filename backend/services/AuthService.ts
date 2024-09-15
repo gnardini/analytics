@@ -1,5 +1,6 @@
 import { JWT_SECRET } from '@backend/config';
 import { db } from '@backend/db/db';
+import OrganizationMembersService from '@backend/services/OrganizationMembersService';
 import { transformUser } from '@backend/services/UsersService';
 import { User } from '@type/user';
 import bcrypt from 'bcrypt';
@@ -56,9 +57,52 @@ const AuthService = {
 
       return transformUser(user);
     } catch (error) {
-      console.error("Error verifying token:", error);
+      console.error('Error verifying token:', error);
       return null;
     }
+  },
+
+  verifyInvitationToken: (token: string): { email: string; organizationId: string } => {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { email: string; organizationId: string };
+      return {
+        email: decoded.email,
+        organizationId: decoded.organizationId,
+      };
+    } catch (error) {
+      throw new Error('Invalid or expired invitation token');
+    }
+  },
+
+  signUpWithInvitation: async (
+    email: string,
+    password: string,
+    organizationId: string,
+    membershipType: 'admin' | 'member',
+  ): Promise<{ user: User; token: string }> => {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const [newUser] = await db('users')
+      .insert({
+        id: uuidv7(),
+        email,
+        password: hashedPassword,
+        last_access: null,
+      })
+      .returning('*');
+
+    await OrganizationMembersService.getOrCreateOrganizationMember(
+      organizationId,
+      newUser.id,
+      membershipType,
+    );
+
+    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '30d' });
+
+    return {
+      user: transformUser(newUser),
+      token,
+    };
   },
 };
 
