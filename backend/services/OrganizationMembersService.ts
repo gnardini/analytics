@@ -1,3 +1,4 @@
+import { JWT_SECRET } from '@backend/config';
 import { db } from '@backend/db/db';
 import { toISOString } from '@backend/services/dbHelpers';
 import { EmailService } from '@backend/services/EmailService';
@@ -6,7 +7,6 @@ import { UsersService } from '@backend/services/UsersService';
 import { OrgUser } from '@type/organization';
 import jwt from 'jsonwebtoken';
 import { uuidv7 } from 'uuidv7';
-import { JWT_SECRET } from '@backend/config';
 
 const transformOrgUser = (orgUser: any): OrgUser => ({
   id: orgUser.id,
@@ -28,23 +28,48 @@ const OrganizationMembersService = {
     return members.map(transformOrgUser);
   },
 
+  getOrCreateOrganizationMember: async (
+    organizationId: string,
+    userId: string,
+    membershipType: 'admin' | 'member',
+  ): Promise<OrgUser> => {
+    let orgUser = await db('user_organizations')
+      .where({ organization_id: organizationId, user_id: userId })
+      .first();
+
+    if (orgUser) {
+      [orgUser] = await db('user_organizations')
+        .where({ organization_id: organizationId, user_id: userId })
+        .update({ membership_type: membershipType })
+        .returning('*');
+    } else {
+      [orgUser] = await db('user_organizations')
+        .insert({
+          id: uuidv7(),
+          organization_id: organizationId,
+          user_id: userId,
+          membership_type: membershipType,
+        })
+        .returning('*');
+    }
+
+    return transformOrgUser(orgUser);
+  },
+
   addOrganizationMember: async (
     organizationId: string,
     userEmail: string,
     membershipType: 'admin' | 'member',
-  ): Promise<OrgUser | null> => {
-    const { user, created } = await UsersService.getOrCreateUserByEmail(userEmail);
+  ): Promise<{ orgUser: OrgUser; created: boolean }> => {
+    const { user, created: userCreated } = await UsersService.getOrCreateUserByEmail(userEmail);
 
-    const [orgUser] = await db('user_organizations')
-      .insert({
-        id: uuidv7(),
-        organization_id: organizationId,
-        user_id: user.id,
-        membership_type: membershipType,
-      })
-      .returning('*');
+    const orgUser = await OrganizationMembersService.getOrCreateOrganizationMember(
+      organizationId,
+      user.id,
+      membershipType,
+    );
 
-    if (created) {
+    if (userCreated) {
       const org = await OrganizationsService.getOrganizationById(organizationId);
       const token = jwt.sign({ email: userEmail, organizationId, membershipType }, JWT_SECRET, {
         expiresIn: '7d',
@@ -62,9 +87,11 @@ https://phinxer.com/welcome?token=${token}
 
 See you soon!`,
       );
+    } else {
+      // TODO: Send email
     }
 
-    return transformOrgUser({ ...orgUser, email: user.email });
+    return { orgUser, created: userCreated };
   },
 };
 
