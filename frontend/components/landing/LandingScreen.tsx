@@ -37,7 +37,7 @@ export function LandingScreen({ user }: Props) {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6 text-center relative bg-gradient-to-r from-secondary-background via-primary-background to-secondary-background">
+    <div className="flex flex-col items-center min-h-screen p-3 sm:p-6 text-center relative bg-gradient-to-r from-secondary-background via-primary-background to-secondary-background">
       <nav className="w-full max-w-[1000px] flex justify-end items-center mb-10 gap-8">
         <div className="flex gap-1 mr-auto items-center">
           <img src={logoUrl} className="w-16 h-16" />
@@ -62,18 +62,18 @@ export function LandingScreen({ user }: Props) {
         )}
       </nav>
       <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
-      <h1 className="text-6xl font-bold mt-20 bg-clip-text text-transparent bg-gradient-to-r from-secondary-accent to-purple-500">
+      <h1 className="text-3xl sm:text-6xl font-bold mt-4 sm:mt-20 bg-clip-text text-transparent bg-gradient-to-r from-secondary-accent to-purple-500">
         Powerful and Affordable
         <br />
         Web & Mobile Analytics
       </h1>
-      <div className="w-[1000px] flex flex-col">
-        <h2 className="w-[600px] mx-auto text-2xl mt-8">
+      <div className="w-full md:w-[1000px] flex flex-col">
+        <h2 className="w-full md:w-[600px] mx-auto text-lg md:text-2xl mt-8">
           If you want to know how your users are using your website or app you have two options:
         </h2>
         <div className="flex justify-between w-full mt-8">
-          <div className="w-1/2 px-4">
-            <h3 className="text-xl font-semibold mb-2">
+          <div className="w-1/2 px-2 sm:px-4">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2">
               Give all your data to <span className="text-orange-400">Google Analytics</span>
             </h3>
             <p className="text-text-secondary">
@@ -81,15 +81,15 @@ export function LandingScreen({ user }: Props) {
               entire internet for their own profit
             </p>
           </div>
-          <div className="w-1/2 px-4">
-            <h3 className="text-xl font-semibold mb-2">Use one of the paid alternatives</h3>
+          <div className="w-1/2 px-2 sm:px-4">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2">Use one of the paid alternatives</h3>
             <p className="text-text-secondary">
               There are alternatives, with different degrees of privacy preserving. They charge very
               high prices for this service.
             </p>
           </div>
         </div>
-        <p className="w-[800px] mx-auto text-xl mt-10 text-text-primary">
+        <p className="sm:w-[800px] mx-auto sm:text-xl mt-10 text-text-primary">
           We are committed to being the cheapest feature-rich analytics system that doesn't require
           selling your soul to Google.
         </p>
@@ -109,8 +109,8 @@ export function LandingScreen({ user }: Props) {
 
       {/* Features Section */}
       <div className="w-full max-w-[1000px] mt-32">
-        <h2 className="text-4xl font-bold mb-12">Why Choose Phinxer?</h2>
-        <div className="grid grid-cols-2 gap-8">
+        <h2 className="text-2xl sm:text-4xl font-bold mb-12">Why Choose Phinxer?</h2>
+        <div className="grid grid-cols-2 gap-2 sm:gap-8">
           <FeatureBox
             icon={<FaGithub className="text-4xl text-secondary-accent" />}
             title="Open Source"
@@ -136,13 +136,13 @@ export function LandingScreen({ user }: Props) {
 
       {/* Pricing Section */}
       <div ref={pricingSectionRef} className="w-full max-w-[1000px] mt-32 mb-10">
-        <h2 className="text-4xl font-bold mb-8">Pay for what you use</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-8">Pay for what you use</h2>
         <div className="flex justify-between items-start">
-          <div className="w-1/2 pr-8 flex flex-col">
-            <h3 className="text-2xl font-semibold mb-4 self-start">
+          <div className="w-1/2 pr-3 sm:pr-8 flex flex-col">
+            <h3 className="text-lg sm:text-2xl font-semibold mb-4 self-start">
               Affordable Analytics for Everyone
             </h3>
-            <ul className="list-disc list-inside text-left text-lg text-text-secondary space-y-1">
+            <ul className="list-disc list-inside text-left text-base sm:text-lg text-text-secondary space-y-1">
               <li>Full feature access for all users</li>
               <li>Unlimited users & websites</li>
               <li>No hidden fees or complicated tiers</li>
@@ -150,11 +150,11 @@ export function LandingScreen({ user }: Props) {
               <li>Privacy-focused analytics you can trust</li>
             </ul>
           </div>
-          <div className="w-1/2 pl-8 border-l border-text-tertiary flex flex-col">
-            <div className="self-start text-5xl font-bold text-secondary-accent mb-4">
-              $10 <span className="text-2xl text-text-primary">per 1M events</span>
+          <div className="w-1/2 pl-3 sm:pl-8 border-l border-text-tertiary flex flex-col">
+            <div className="self-start text-3xl sm:text-5xl font-bold text-secondary-accent mb-4">
+              $10 <span className="text-base sm:text-2xl text-text-primary">per 1M events</span>
             </div>
-            <ul className="list-disc list-inside text-left text-lg text-text-secondary space-y-1">
+            <ul className="list-disc list-inside text-left text-base sm:text-lg text-text-secondary space-y-1">
               <li>1 year data retention</li>
               <li>Credits expire after 1 year</li>
               <li>
