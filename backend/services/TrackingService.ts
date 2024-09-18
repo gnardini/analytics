@@ -40,6 +40,7 @@ export const TrackingService = {
 
     let parsedData = data.data;
     let extraData = data.extra_data || {};
+    extraData.user_agent = req.headers['user-agent'];
 
     if (data.event === 'pageview' && data.data) {
       const { pathname, extraParams } = this.parsePageviewData(data.data);
